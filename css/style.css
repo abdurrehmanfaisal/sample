@@ -1,6 +1,11 @@
 /*******************************/
+
+
 /********* General CSS *********/
+
+
 /*******************************/
+
 body {
     color: #666666;
     background: #ffffff;
@@ -9,10 +14,10 @@ body {
 }
 
 h1,
-h2, 
-h3, 
+h2,
+h3,
 h4,
-h5, 
+h5,
 h6 {
     font-family: 'EB Garamond', serif;
     font-weight: 600;
@@ -72,8 +77,13 @@ a:focus {
 
 
 /**********************************/
+
+
 /********** Top Bar CSS ***********/
+
+
 /**********************************/
+
 .top-bar {
     position: relative;
     height: 90px;
@@ -168,7 +178,6 @@ a:focus {
     .top-bar .logo {
         text-align: center;
     }
-    
     .top-bar .social {
         display: none;
     }
@@ -176,8 +185,13 @@ a:focus {
 
 
 /**********************************/
+
+
 /*********** Nav Bar CSS **********/
+
+
 /**********************************/
+
 .nav-bar {
     position: relative;
     padding: 20px 0;
@@ -233,20 +247,16 @@ a:focus {
     .nav-bar {
         padding: 20px 60px;
     }
-    
     .nav-bar.nav-sticky {
         padding: 10px 60px;
     }
-    
     .nav-bar,
     .nav-bar .navbar {
         background: #121518 !important;
     }
-    
     .nav-bar .navbar-brand {
         display: none;
     }
-    
     .nav-bar a.nav-link {
         padding: 8px 15px;
         font-size: 15px;
@@ -254,21 +264,18 @@ a:focus {
     }
 }
 
-@media (max-width: 991.98px) {   
+@media (max-width: 991.98px) {
     .nav-bar,
     .nav-bar .navbar {
         padding: 3px 0;
         background: #121518 !important;
     }
-    
     .nav-bar a.nav-link {
         padding: 5px;
     }
-    
     .nav-bar .dropdown-menu {
         box-shadow: none;
     }
-    
     .nav-bar .btn {
         display: none;
     }
@@ -276,8 +283,13 @@ a:focus {
 
 
 /*******************************/
+
+
 /******** Carousel CSS *********/
+
+
 /*******************************/
+
 .carousel {
     position: relative;
     width: 100%;
@@ -358,11 +370,9 @@ a:focus {
         font-size: 40px;
         font-weight: 700;
     }
-    
     .carousel .carousel-caption p {
         font-size: 20px;
     }
-    
     .carousel .carousel-caption .btn {
         padding: 12px 30px;
         font-size: 18px;
@@ -376,11 +386,9 @@ a:focus {
         font-size: 30px;
         font-weight: 500;
     }
-    
     .carousel .carousel-caption p {
         font-size: 16px;
     }
-    
     .carousel .carousel-caption .btn {
         padding: 10px 25px;
         font-size: 16px;
@@ -396,8 +404,13 @@ a:focus {
 
 
 /*******************************/
+
+
 /******* Page Header CSS *******/
+
+
 /*******************************/
+
 .page-header {
     position: relative;
     margin-bottom: 45px;
@@ -455,7 +468,6 @@ a:focus {
     .page-header h2 {
         font-size: 35px;
     }
-    
     .page-header a {
         font-size: 18px;
     }
@@ -463,8 +475,13 @@ a:focus {
 
 
 /*******************************/
+
+
 /******* Section Header ********/
+
+
 /*******************************/
+
 .section-header {
     position: relative;
     width: 100%;
@@ -513,9 +530,15 @@ a:focus {
     }
 }
 
+
 /*******************************/
+
+
 /******** Top Feature CSS ******/
+
+
 /*******************************/
+
 .feature-top {
     position: relative;
     background: #121518;
@@ -531,7 +554,6 @@ a:focus {
     .feature-top .col-md-3:nth-child(1n) {
         border-right: none;
     }
-    
     .feature-top .col-md-3:last-child {
         border-bottom: none;
     }
@@ -541,7 +563,6 @@ a:focus {
     .feature-top .col-md-3:nth-child(2n) {
         border-right: none;
     }
-    
     .feature-top .col-md-3:nth-child(3n),
     .feature-top .col-md-3:nth-child(4n) {
         border-bottom: none;
@@ -552,7 +573,6 @@ a:focus {
     .feature-top .col-md-3 {
         border-bottom: none;
     }
-    
     .feature-top .col-md-3:nth-child(4n) {
         border-right: none;
     }
@@ -583,8 +603,13 @@ a:focus {
 
 
 /*******************************/
+
+
 /********** About CSS **********/
+
+
 /*******************************/
+
 .about {
     position: relative;
     width: 100%;
@@ -641,8 +666,13 @@ a:focus {
 
 
 /*******************************/
+
+
 /********* Service CSS *********/
+
+
 /*******************************/
+
 .service {
     position: relative;
     width: 100%;
@@ -718,8 +748,13 @@ a:focus {
 
 
 /*******************************/
+
+
 /********* Feature CSS *********/
+
+
 /*******************************/
+
 .feature {
     position: relative;
     width: 100%;
@@ -792,8 +827,13 @@ a:focus {
 
 
 /*******************************/
+
+
 /*********** Team CSS **********/
+
+
 /*******************************/
+
 .team {
     position: relative;
     width: 100%;
@@ -868,8 +908,13 @@ a:focus {
 
 
 /*******************************/
+
+
 /*********** FAQs CSS **********/
+
+
 /*******************************/
+
 .faqs {
     position: relative;
     width: 100%;
@@ -984,8 +1029,13 @@ a:focus {
 
 
 /*******************************/
+
+
 /******* Testimonial CSS *******/
+
+
 /*******************************/
+
 .testimonial {
     position: relative;
     padding: 45px 0;
@@ -1058,8 +1108,13 @@ a:focus {
 
 
 /*******************************/
+
+
 /*********** Blog CSS **********/
+
+
 /*******************************/
+
 .blog {
     position: relative;
     width: 100%;
@@ -1173,8 +1228,13 @@ a:focus {
 
 
 /*******************************/
+
+
 /********* Timeline CSS ********/
+
+
 /*******************************/
+
 .timeline {
     position: relative;
     padding: 45px 0;
@@ -1288,16 +1348,13 @@ a:focus {
         padding-right: 15px;
         padding-bottom: 30px;
     }
-    
     .timeline .timeline-container:last-child {
         padding-bottom: 0;
     }
-    
     .timeline .timeline-container.right {
         left: 0%;
     }
-
-    .timeline .timeline-container.left::after, 
+    .timeline .timeline-container.left::after,
     .timeline .timeline-container.right::after,
     .timeline .timeline-container.left::before,
     .timeline .timeline-container.right::before {
@@ -1305,7 +1362,6 @@ a:focus {
         height: 35px;
         left: 15px;
     }
-    
     .timeline .timeline-container.left .timeline-content,
     .timeline .timeline-container.right .timeline-content {
         border-left: 5px solid #aa9166;
@@ -1315,8 +1371,13 @@ a:focus {
 
 
 /*******************************/
+
+
 /******** Portfolio CSS ********/
+
+
 /*******************************/
+
 .portfolio {
     position: relative;
     padding: 45px 0;
@@ -1386,8 +1447,8 @@ a:focus {
 
 .portfolio img {
     position: relative;
-    width: 100%; 
-    height: 100%; 
+    width: 100%;
+    height: 100%;
     object-fit: cover;
 }
 
@@ -1445,8 +1506,13 @@ a:focus {
 
 
 /*******************************/
+
+
 /********* Contact CSS *********/
+
+
 /*******************************/
+
 .contact {
     position: relative;
     width: 100%;
@@ -1544,8 +1610,13 @@ a:focus {
 
 
 /*******************************/
+
+
 /******* Single Page CSS *******/
+
+
 /*******************************/
+
 .single {
     position: relative;
     width: 100%;
@@ -1584,8 +1655,13 @@ a:focus {
 
 
 /*******************************/
+
+
 /********** Newsletter *********/
+
+
 /*******************************/
+
 .newsletter {
     position: relative;
     max-width: 900px;
@@ -1639,8 +1715,13 @@ a:focus {
 
 
 /*******************************/
+
+
 /********* Footer CSS **********/
+
+
 /*******************************/
+
 .footer {
     position: relative;
     margin-top: 45px;
@@ -1659,7 +1740,7 @@ a:focus {
 
 .footer .footer-about h2,
 .footer .footer-link h2,
-.footer .footer-contact h2{
+.footer .footer-contact h2 {
     position: relative;
     margin-bottom: 30px;
     font-size: 25px;
@@ -1739,7 +1820,6 @@ a:focus {
     padding-right: 0;
     border-right: none;
 }
-
 
 .footer .copyright {
     padding: 30px 15px;

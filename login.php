@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
           break;
           case 3:
-            header('LOCATION:./customer/customer.dashboard.php');
+            header('LOCATION:./index.php');
             exit();
           break;
           default;

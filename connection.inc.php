@@ -7,5 +7,5 @@
     $database = "lawyer_db";
 
     if($conn = mysqli_connect($hostname,$username,$password,$database)) {
-        echo "$database connected successfully!";
+        // echo "$database connected successfully!";
     }
