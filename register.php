@@ -104,7 +104,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Pages / Register - NiceAdmin Bootstrap Template</title>
+  <title>Register - Lawyer Management System</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -141,7 +141,6 @@
 
   <main>
     <div class="container">
-      <?php pr($_POST);?>
 
       <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
         <div class="container">
@@ -150,8 +149,8 @@
 
               <div class="d-flex justify-content-center py-4">
                 <a href="index.html" class="logo d-flex align-items-center w-auto">
-                  <img src="assets/img/logo.png" alt="">
-                  <span class="d-none d-lg-block">NiceAdmin</span>
+                  <img src="#" alt="">
+                  <span class="d-none d-lg-block">Lawyer Management System</span>
                 </a>
               </div><!-- End Logo -->
 
@@ -172,7 +171,7 @@
                         <option value="3">Customer</option>
                       </select>
                       <div class="invalid-feedback">Select Role!</div>
-                    </div>  
+                    </div>
                   <div class="col-12">
                       <label for="yourName" class="form-label">Your Name</label>
                       <input type="text" name="name" class="form-control" id="yourName" value="<?php echo $name;?>" required>
@@ -206,7 +205,7 @@
 
                     <div class="col-12">
                       <label for="phone" class="form-label">Phone/Cell Number</label>
-                      <input type="tel" name="phone" class="form-control" id="phone" placeholder="+92-3XX-XXXXXXX" required>
+                      <input type="tel" name="phone" class="form-control" id="phone" placeholder="+92-3XX-XXXXXXX" value="<?php echo $phone;?>" required>
                       <div class="invalid-feedback">Please enter a valid Phone Number!</div>
                       <div class="text-danger"><?php echo $phoneErr?></div>
                     </div>
@@ -216,20 +215,20 @@
                       <label for="yourUsername" class="form-label">Username</label>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" name="username" class="form-control" id="yourUsername" required>
+                        <input type="text" name="username" class="form-control" id="yourUsername" value="<?php echo $username;?>" required>
                         <div class="invalid-feedback">Please choose a username.</div>
                       </div>
                     </div>
 
                     <div class="col-12">
                       <label for="yourPassword" class="form-label">Password</label>
-                      <input type="password" name="password" class="form-control" id="yourPassword" required>
+                      <input type="password" name="password" class="form-control" id="yourPassword" value="<?php echo $password;?>" required>
                       <div class="invalid-feedback">Please enter your password!</div>
                     </div>
 
                     <div class="col-12">
                       <label for="cPassword" class="form-label">Confirm Password</label>
-                      <input type="password" name="cPassword" class="form-control" id="cPassword" required>
+                      <input type="password" name="cPassword" class="form-control" id="cPassword" value="<?php echo $cPassword;?>" required>
                       <div class="invalid-feedback">Please re-enter your password!</div>
                     </div>
 
@@ -256,7 +255,7 @@
                 <!-- You can delete the links only if you purchased the pro version. -->
                 <!-- Licensing information: https://bootstrapmade.com/license/ -->
                 <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                Designed by @LMS
               </div>
 
             </div>

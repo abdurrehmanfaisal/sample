@@ -36,7 +36,7 @@ require('connection.inc.php');
                 <div class="col-lg-3">
                     <div class="logo">
                         <a href="index.html">
-                            <h1>Kanun</h1>
+                            <h1>LMS</h1>
                             <!-- <img src="img/logo.jpg" alt="Logo"> -->
                         </a>
                     </div>
@@ -75,26 +75,18 @@ require('connection.inc.php');
                     
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto">
-                            <a href="index.html" class="nav-item nav-link active">Home</a>
-                            <a href="about.html" class="nav-item nav-link">About</a>
+                            <a href="index.php" class="nav-item nav-link active">Home</a>
+                            <a href="about.php" class="nav-item nav-link">About</a>
                             <!-- <a href="service.html" class="nav-item nav-link">Practice</a> -->
-                            <a href="team.html" class="nav-item nav-link">Attorneys</a>
-                            <!-- <a href="portfolio.html" class="nav-item nav-link">Case Studies</a> -->
-                            <!-- <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
-                                <div class="dropdown-menu">
-                                    <a href="blog.html" class="dropdown-item">Blog Page</a>
-                                    <a href="single.html" class="dropdown-item">Single Page</a>
-                                </div>
-                            </div> -->
-                            <a href="contact.html" class="nav-item nav-link">Services</a>
+                            <a href="attorneys.php" class="nav-item nav-link">Attorneys</a>
+                            <a href="practices.php" class="nav-item nav-link">Practice</a>                            
                         </div>
                         <?php
                         if(!empty($_SESSION) && $_SESSION['roleid'] == 3){
                         ?>
                         <div class="ml-auto">
                             <a href="./customer/customer.dashboard.php"><i class="far fa-user"></i>View Profile</a>
-                            <a class="btn" href="login.php">Log out</a>
+                            <a class="btn" href="logout.php">Log out</a>
                         </div>
                         <?php 
                         }else {

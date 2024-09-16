@@ -1,6 +1,7 @@
-<?php 
-  include('customer.header.inc.php');
+<?php
+
 ?>
+
 <main id="main" class="main">
   
   <div class="pagetitle">
@@ -166,6 +167,3 @@
     </section>
     
   </main><!-- End #main -->
-  <?php 
-  include('customer.footer.inc.php');
-?>
