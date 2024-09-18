@@ -1,22 +1,25 @@
-<?php 
-include('admin.header.inc.php');
-$userid = $name = $email = $genderid = $roleid = $dob = $photo = $phone = $address = $username = $password = '';
+<?php
+include('customer.header.inc.php');
 
-// Fetch genders and roles from the database
+// Initialize variables
+$userid = $name = $email = $dob = $photo = $phone = $address = $username = $password = '';
+
+// Assume the user is logged in, and we have their session ID (Replace this with actual session handling)
+// session_start();
+$userid = $_SESSION['userid'];  // Assuming session stores the logged-in customer's user ID
+
+// Fetch genders from the database
 $genders_sql = "SELECT * FROM genders";
-$genders = mysqli_query($conn,$genders_sql);
+$genders_result = mysqli_query($conn, $genders_sql);
+$genders = array();
+while ($gender = mysqli_fetch_assoc($genders_result)) {
+    $genders[] = $gender;
+}
 
-$roles_sql = "SELECT * FROM roles";
-$roles = mysqli_query($conn,$roles_sql);
-
-// If the request is GET, retrieve user data for editing
+// If the request is GET, retrieve customer data for editing
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
-    $userid = intval($_GET['userid']);
-    
-    $users_sql = "SELECT *,usr.userid AS usrid,usr.genderid AS gdrid,usr.roleid AS rolid FROM `users` AS `usr` 
-    LEFT JOIN `logins` AS `lgn` ON usr.userid = lgn.userid
+    $users_sql = "SELECT *,usr.userid AS usrid,usr.genderid AS gdrid FROM `users` AS `usr`
     LEFT JOIN `genders` AS `gdr` ON usr.genderid = gdr.genderid
-    LEFT JOIN `roles` AS `rol` ON usr.roleid = rol.roleid
     WHERE usr.userid = $userid";
     
     $user = mysqli_fetch_assoc(mysqli_query($conn, $users_sql));
@@ -24,19 +27,17 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
         $name = mysqli_real_escape_string($conn, $user['name']);
         $email = mysqli_real_escape_string($conn, $user['email']);
         $genderid = mysqli_real_escape_string($conn, $user['gdrid']);
-        $roleid = mysqli_real_escape_string($conn, $user['rolid']);
         $dob = mysqli_real_escape_string($conn, $user['dob']);
         $photo = mysqli_real_escape_string($conn, $user['photo']);
         $phone = mysqli_real_escape_string($conn, $user['phone']);
         $address = mysqli_real_escape_string($conn, $user['address']);
-        $username = mysqli_real_escape_string($conn, $user['username']);
-        $password = mysqli_real_escape_string($conn, $user['password']);
+        // $username = mysqli_real_escape_string($conn, $user['username']);
+        // $password = mysqli_real_escape_string($conn, $user['password']);
     }
 }
 
 // If the request is POST, handle form submission
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $userid = intval($_POST['userid']);
     $name = mysqli_real_escape_string($conn, test_input($_POST['name']));
     $email = mysqli_real_escape_string($conn, test_input($_POST['email']));
     $username = mysqli_real_escape_string($conn, test_input($_POST['username']));
@@ -45,7 +46,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $dob = mysqli_real_escape_string($conn, test_input($_POST['dob']));
     $address = mysqli_real_escape_string($conn, test_input($_POST['address']));
     $genderid = intval($_POST['genderid']);
-    $roleid = intval($_POST['roleid']);
 
     // Handle file upload if exists
     if(isset($_FILES['fileToUpload']) && $_FILES['fileToUpload']['error'] == 0) {
@@ -58,7 +58,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Update the user's data in the `users` table
     $update_user_sql = "UPDATE users SET 
         name='$name', email='$email', phone='$phone', dob='$dob', address='$address', 
-        genderid='$genderid', roleid='$roleid', photo='$photo' 
+        genderid='$genderid', photo='$photo' 
         WHERE userid='$userid'";
     mysqli_query($conn, $update_user_sql);
 
@@ -68,23 +68,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         WHERE userid='$userid'";
     mysqli_query($conn, $update_login_sql);
 
-    // Redirect to the users list page after submission
-    header("Location: users.php");
+    // Redirect to the profile page after submission
+    header("Location: customer.dashboard.php");
     exit;
 }
 ?>
 
 <main id="main" class="main">
 <div class="pagetitle">
-  <h1>Update User</h1>
-  <nav>
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="admin.dashboard.php">Dashboard</a></li>
-      <li class="breadcrumb-item"><a href="users.php">Users</a></li>
-      <li class="breadcrumb-item active">Update User</li>
-    </ol>
-  </nav>
-</div><!-- End Page Title -->
+  <h1>Edit Profile</h1>
+</div>
 
 <section class="section">
   <div class="row">
@@ -92,16 +85,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Update User Details</h5>
+          <h5 class="card-title">Update Your Profile</h5>
 
-          <!-- Update User Form -->
+          <!-- Profile Edit Form -->
           <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
-            <div class="row mb-3">
-              <label for="userid" class="col-sm-2 col-form-label">User ID</label>
-              <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" id="userid" name="userid" value="<?php echo $userid; ?>">
-              </div>
-            </div>
 
             <div class="row mb-3">
               <label for="name" class="col-sm-2 col-form-label">Name</label>
@@ -139,7 +126,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
 
             <div class="row mb-3">
-              <label for="fileToUpload" class="col-sm-2 col-form-label">File Upload</label>
+              <label for="fileToUpload" class="col-sm-2 col-form-label">Profile Picture</label>
               <div class="col-sm-10">
                 <input class="form-control" type="file" id="fileToUpload" name="fileToUpload">
               </div>
@@ -162,9 +149,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             <fieldset class="row mb-3">
               <legend class="col-form-label col-sm-2 pt-0">Gender</legend>
               <div class="col-sm-10">
-                <?php while($gender = mysqli_fetch_assoc($genders)) { ?>
+                <?php foreach ($genders as $gender) { ?>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="genderid" id="gender<?php echo $gender['genderid']; ?>" value="<?php echo $gender['genderid']; ?>" <?php if($gender['genderid'] == $genderid){echo "checked";} ?>>
+                    <input class="form-check-input" type="radio" name="genderid" id="gender<?php echo $gender['genderid']; ?>" value="<?php echo $gender['genderid']; ?>" <?php if ($gender['genderid'] == $genderid) { echo "checked"; } ?>>
                     <label class="form-check-label" for="gender<?php echo $gender['genderid']; ?>">
                       <?php echo $gender['gender']; ?>
                     </label>
@@ -174,24 +161,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             </fieldset>
 
             <div class="row mb-3">
-              <label for="roleid" class="col-sm-2 col-form-label">Role</label>
-              <div class="col-sm-10">
-                <select name="roleid" id="roleid" class="form-select">
-                  <?php while($role = mysqli_fetch_assoc($roles)){ ?>
-                    <option value="<?php echo $role['roleid']; ?>" <?php if($role['roleid'] == $roleid){echo "selected";} ?>><?php echo $role['role']; ?></option>
-                  <?php } ?>
-                </select>
+              <div class="col-sm-10 offset-sm-2">
+                <button type="submit" class="btn btn-primary">Update Profile</button>
               </div>
             </div>
 
-            <div class="row mb-3">
-              <label class="col-sm-2 col-form-label">Submit Button</label>
-              <div class="col-sm-10">
-                <button type="submit" class="btn btn-primary">Submit Form</button>
-              </div>
-            </div>
-
-          </form><!-- End Update User Form -->
+          </form><!-- End Profile Edit Form -->
 
         </div>
       </div>
@@ -200,6 +175,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
   </div>
 </section>
 
-</main><!-- End #main -->
+</main>
 
-<?php include('admin.footer.inc.php'); ?>
+<?php include('customer.footer.inc.php'); ?>

@@ -1,11 +1,10 @@
 <?php
- ob_start();
- require('../connection.inc.php');
- if(!empty($_SESSION) && $_SESSION['roleid'] == 3){
-
- }else {
+ob_start();
+require('../connection.inc.php');
+if (!empty($_SESSION) && $_SESSION['roleid'] == 3) {
+} else {
   header('LOCATION:http://localhost/sample/login.php');
- }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +13,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Dashboard - NiceAdmin Bootstrap Template</title>
+  <title>LMS</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -55,7 +54,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <a href="index.html" class="logo d-flex align-items-center">
         <img src="../assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">NiceAdmin</span>
+        <span class="d-none d-lg-block">LMS</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -220,13 +219,13 @@
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="../assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+            <img src="../assets/img/profile-img.jpg" alt="Profile" class="rounded-circle" >
+            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $_SESSION['name'];?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
+              <h6><?php echo $_SESSION['name'];?></h6>
               <span>Web Designer</span>
             </li>
             <li>
@@ -290,25 +289,19 @@
         </a>
       </li><!-- End Dashboard Nav -->
 
-      
+
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-contact.html">
-          <i class="bi bi-envelope"></i>
-          <span>Contact</span>
+        <a class="nav-link collapsed" href="appointment.php">
+          <i class="bi bi-calendar-check"></i>
+
+          <span>Appointments</span>
         </a>
       </li><!-- End Contact Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-register.html">
-          <i class="bi bi-card-list"></i>
-          <span>Register</span>
-        </a>
-      </li><!-- End Register Page Nav -->
-
-      <li class="nav-item">
         <a class="nav-link collapsed" href="../index.php">
-        <i class="bi bi-box-arrow-in-left"></i>
+          <i class="bi bi-box-arrow-in-left"></i>
           <span>Back to website</span>
         </a>
       </li><!-- End Login Page Nav -->

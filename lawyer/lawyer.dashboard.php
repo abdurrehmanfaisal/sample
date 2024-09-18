@@ -1,318 +1,205 @@
-<?php 
-  include('lawyer.header.inc.php');
+<?php
+include('lawyer.header.inc.php');
+$userid = $name = $email = $genderid = $roleid = $dob = $photo = $phone = $address = $username = $password = '';
+
+// Fetch genders and roles from the database
+$genders_sql = "SELECT * FROM genders";
+$genders = mysqli_query($conn, $genders_sql);
+
+$roles_sql = "SELECT * FROM roles";
+$roles = mysqli_query($conn, $roles_sql);
+
+// If the request is GET, retrieve user data for editing
+$userid = $_SESSION['userid'];
+
+$users_sql = "SELECT *,usr.userid AS usrid,usr.genderid AS gdrid,usr.roleid AS rolid FROM `users` AS `usr` 
+LEFT JOIN `logins` AS `lgn` ON usr.userid = lgn.userid
+LEFT JOIN `genders` AS `gdr` ON usr.genderid = gdr.genderid
+LEFT JOIN `roles` AS `rol` ON usr.roleid = rol.roleid
+WHERE usr.userid = $userid";
+
+$user = mysqli_fetch_assoc(mysqli_query($conn, $users_sql));
+if ($user) {
+  $name = mysqli_real_escape_string($conn, $user['name']);
+  $email = mysqli_real_escape_string($conn, $user['email']);
+  $genderid = mysqli_real_escape_string($conn, $user['gdrid']);
+  $roleid = mysqli_real_escape_string($conn, $user['rolid']);
+  $dob = mysqli_real_escape_string($conn, $user['dob']);
+  $photo = mysqli_real_escape_string($conn, $user['photo']);
+  $phone = mysqli_real_escape_string($conn, $user['phone']);
+  $address = mysqli_real_escape_string($conn, $user['address']);
+  $username = mysqli_real_escape_string($conn, $user['username']);
+  $password = mysqli_real_escape_string($conn, $user['password']);
+}
+
+
+// If the request is POST, handle form submission
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  $userid = intval($_POST['userid']);
+  $name = mysqli_real_escape_string($conn, test_input($_POST['name']));
+  $email = mysqli_real_escape_string($conn, test_input($_POST['email']));
+  $username = mysqli_real_escape_string($conn, test_input($_POST['username']));
+  $password = mysqli_real_escape_string($conn, test_input($_POST['password']));
+  $phone = mysqli_real_escape_string($conn, test_input($_POST['phone']));
+  $dob = mysqli_real_escape_string($conn, test_input($_POST['dob']));
+  $address = mysqli_real_escape_string($conn, test_input($_POST['address']));
+  $genderid = intval($_POST['genderid']);
+  // $roleid = intval($_POST['roleid']);
+
+  // Handle file upload if exists
+  if (isset($_FILES['fileToUpload']) && $_FILES['fileToUpload']['error'] == 0) {
+    $target_dir = "uploads/";
+    $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+    move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
+    $photo = $target_file;
+  }
+
+  // // Update the user's data in the `users` table
+  // $update_user_sql = "UPDATE users SET 
+  //       name='$name', email='$email', phone='$phone', dob='$dob', address='$address', 
+  //       genderid='$genderid', roleid='$roleid', photo='$photo' 
+  //       WHERE userid='$userid'";
+  // mysqli_query($conn, $update_user_sql);
+
+  // // Update the login information in the `logins` table
+  // $update_login_sql = "UPDATE logins SET 
+  //       username='$username', password='$password' 
+  //       WHERE userid='$userid'";
+  // mysqli_query($conn, $update_login_sql);
+
+  // Redirect to the users list page after submission
+  header("Location: update.lawyer.php");
+  exit;
+}
 ?>
+
 <main id="main" class="main">
-  
   <div class="pagetitle">
-    <h1>Dashboard</h1>
+    <h1>User</h1>
     <nav>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item"><a href="admin.dashboard.php">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="users.php">Users</a></li>
+        <li class="breadcrumb-item active">User</li>
       </ol>
     </nav>
   </div><!-- End Page Title -->
-  
-  <section class="section dashboard">
+
+  <section class="section">
     <div class="row">
-      
-      <!-- Left side columns -->
-      <div class="col-lg-8">
-        <div class="row">
-          
-          <!-- Sales Card -->
-          <div class="col-xxl-4 col-md-6">
-            <div class="card info-card sales-card">
-              
-              <div class="filter">
-                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                  <li class="dropdown-header text-start">
-                    <h6>Filter</h6>
-                  </li>
-                  
-                  <li><a class="dropdown-item" href="#">Today</a></li>
-                  <li><a class="dropdown-item" href="#">This Month</a></li>
-                  <li><a class="dropdown-item" href="#">This Year</a></li>
-                </ul>
-              </div>
-              
-              <div class="card-body">
-                <h5 class="card-title">Sales <span>| Today</span></h5>
-                
-                <div class="d-flex align-items-center">
-                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-cart"></i>
-                  </div>
-                  <div class="ps-3">
-                    <h6>145</h6>
-                    <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-                    
-                  </div>
-                </div>
-                </div>
+      <div class="col-lg-12">
 
-              </div>
-            </div><!-- End Sales Card -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">User Details</h5>
 
-            <!-- Revenue Card -->
-            <div class="col-xxl-4 col-md-6">
-              <div class="card info-card revenue-card">
-                
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-                    
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
-                
-                <div class="card-body">
-                  <h5 class="card-title">Revenue <span>| This Month</span></h5>
-                  
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-currency-dollar"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>$3,264</h6>
-                      <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-                      
-                    </div>
-                  </div>
-                </div>
-                
-              </div>
-            </div><!-- End Revenue Card -->
-
-            <!-- Customers Card -->
-            <div class="col-xxl-4 col-xl-12">
-
-              <div class="card info-card customers-card">
-                
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-                    
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
-                
-                <div class="card-body">
-                  <h5 class="card-title">Customers <span>| This Year</span></h5>
-                  
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-people"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>1244</h6>
-                      <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>
-                      
-                    </div>
-                  </div>
-                  
+            <!-- Update User Form -->
+            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
+              <!-- User ID (Read-only) -->
+              <div class="row mb-3">
+                <label for="userid" class="col-sm-2 col-form-label">User ID</label>
+                <div class="col-sm-10">
+                  <input type="text" readonly class="form-control-plaintext" id="userid" name="userid" value="<?php echo $userid; ?>">
                 </div>
               </div>
-              
-            </div><!-- End Customers Card -->
 
-           
-
-            <!-- Recent Sales -->
-            <div class="col-12">
-              <div class="card recent-sales overflow-auto">
-                
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-                    
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
+              <div class="row mb-3">
+                <label for="name" class="col-sm-2 col-form-label">Name</label>
+                <div class="col-sm-10">
+                  <input type="text" readonly class="form-control-plaintext" id="name" name="name" value="<?php echo $name; ?>">
                 </div>
-                
-                <div class="card-body">
-                  <h5 class="card-title">Recent Sales <span>| Today</span></h5>
-                  
-                  <table class="table table-borderless datatable">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Customer</th>
-                        <th scope="col">Product</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row"><a href="#">#2457</a></th>
-                        <td>Brandon Jacob</td>
-                        <td><a href="#" class="text-primary">At praesentium minu</a></td>
-                        <td>$64</td>
-                        <td><span class="badge bg-success">Approved</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2147</a></th>
-                        <td>Bridie Kessler</td>
-                        <td><a href="#" class="text-primary">Blanditiis dolor omnis similique</a></td>
-                        <td>$47</td>
-                        <td><span class="badge bg-warning">Pending</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2049</a></th>
-                        <td>Ashleigh Langosh</td>
-                        <td><a href="#" class="text-primary">At recusandae consectetur</a></td>
-                        <td>$147</td>
-                        <td><span class="badge bg-success">Approved</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2644</a></th>
-                        <td>Angus Grady</td>
-                        <td><a href="#" class="text-primar">Ut voluptatem id earum et</a></td>
-                        <td>$67</td>
-                        <td><span class="badge bg-danger">Rejected</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2644</a></th>
-                        <td>Raheem Lehner</td>
-                        <td><a href="#" class="text-primary">Sunt similique distinctio</a></td>
-                        <td>$165</td>
-                        <td><span class="badge bg-success">Approved</span></td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                </div>
-                
               </div>
-            </div><!-- End Recent Sales -->
 
-            
+              <div class="row mb-3">
+                <label for="email" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                  <input type="email" readonly class="form-control-plaintext" id="email" name="email" value="<?php echo $email; ?>">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="username" class="col-sm-2 col-form-label">Username</label>
+                <div class="col-sm-10">
+                  <input type="text" readonly class="form-control-plaintext" id="username" name="username" value="<?php echo $username; ?>">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="password" class="col-sm-2 col-form-label">Password</label>
+                <div class="col-sm-10">
+                  <input type="password" readonly class="form-control-plaintext" id="password" name="password" value="<?php echo $password; ?>">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="phone" class="col-sm-2 col-form-label">Phone/Cell</label>
+                <div class="col-sm-10">
+                  <input type="tel" readonly class="form-control-plaintext" id="phone" name="phone" value="<?php echo $phone; ?>">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="dob" class="col-sm-2 col-form-label">Date of Birth</label>
+                <div class="col-sm-10">
+                  <input type="date" readonly class="form-control-plaintext" id="dob" name="dob" value="<?php echo $dob; ?>">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="address" class="col-sm-2 col-form-label">Address</label>
+                <div class="col-sm-10">
+                  <textarea readonly class="form-control-plaintext" style="height: 100px" id="address" name="address"><?php echo $address; ?></textarea>
+                </div>
+              </div>
+
+              <fieldset class="row mb-3">
+  <legend class="col-form-label col-sm-2 pt-0">Gender</legend>
+  <div class="col-sm-10">
+    <?php 
+    if (!empty($genderid)) {
+      $gender_sql = "SELECT * FROM genders WHERE genderid = $genderid";
+      $gender = mysqli_fetch_assoc(mysqli_query($conn, $gender_sql));
+      ?>
+      <input readonly class="form-control-plaintext" type="hidden" name="genderid" value="<?php echo $genderid; ?>">
+      <label class="form-check-label">
+        <?php echo $gender['gender']; ?>
+      </label>
+    <?php } else { ?>
+      <label class="form-check-label">
+        No gender selected
+      </label>
+    <?php } ?>
+  </div>
+</fieldset>
+
+              <!-- <div class="row mb-3">
+                <label for="roleid" class="col-sm-2 col-form-label">Role</label>
+                <div class="col-sm-10">
+                  <select name="roleid" id="roleid" class="form-select">
+                    <?php while ($role = mysqli_fetch_assoc($roles)) { ?>
+                      <option value="<?php echo $role['roleid']; ?>" <?php if ($role['roleid'] == $roleid) {
+                     echo "selected";
+                    } ?>><?php echo $role['role']; ?></option>
+                    <?php } ?>
+                  </select>
+                </div>
+              </div>
+               -->
+              <div class="row mb-3">
+                <div class="col-sm-10">
+                  <button type="submit" class="btn btn-primary">Edit</button>
+                </div>
+              </div>
+
+            </form><!-- End Update User Form -->
+
           </div>
-        </div><!-- End Left side columns -->
+        </div>
 
-        <!-- Right side columns -->
-        <div class="col-lg-4">
-
-          <!-- Recent Activity -->
-          <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
-                
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
-            
-            <div class="card-body">
-              <h5 class="card-title">Recent Activity <span>| Today</span></h5>
-              
-              <div class="activity">
-                
-                <div class="activity-item d-flex">
-                  <div class="activite-label">32 min</div>
-                  <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                  <div class="activity-content">
-                    Quia quae rerum <a href="#" class="fw-bold text-dark">explicabo officiis</a> beatae
-                  </div>
-                </div><!-- End activity item-->
-                
-                <div class="activity-item d-flex">
-                  <div class="activite-label">56 min</div>
-                  <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
-                  <div class="activity-content">
-                    Voluptatem blanditiis blanditiis eveniet
-                  </div>
-                </div><!-- End activity item-->
-                
-                <div class="activity-item d-flex">
-                  <div class="activite-label">2 hrs</div>
-                  <i class='bi bi-circle-fill activity-badge text-primary align-self-start'></i>
-                  <div class="activity-content">
-                    Voluptates corrupti molestias voluptatem
-                  </div>
-                </div><!-- End activity item-->
-                
-                <div class="activity-item d-flex">
-                  <div class="activite-label">1 day</div>
-                  <i class='bi bi-circle-fill activity-badge text-info align-self-start'></i>
-                  <div class="activity-content">
-                    Tempore autem saepe <a href="#" class="fw-bold text-dark">occaecati voluptatem</a> tempore
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">2 days</div>
-                  <i class='bi bi-circle-fill activity-badge text-warning align-self-start'></i>
-                  <div class="activity-content">
-                    Est sit eum reiciendis exercitationem
-                  </div>
-                </div><!-- End activity item-->
-                
-                <div class="activity-item d-flex">
-                  <div class="activite-label">4 weeks</div>
-                  <i class='bi bi-circle-fill activity-badge text-muted align-self-start'></i>
-                  <div class="activity-content">
-                    Dicta dolorem harum nulla eius. Ut quidem quidem sit quas
-                  </div>
-                </div><!-- End activity item-->
-                
-              </div>
-
-            </div>
-          </div><!-- End Recent Activity -->
-          
-          
-
-<!-- Website Traffic -->
-
-  
- 
-          <!-- News & Updates Traffic -->
-          <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
-
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
-            
-
-          </div><!-- End News & Updates -->
-
-        </div><!-- End Right side columns -->
-        
       </div>
-    </section>
-    
-  </main><!-- End #main -->
-  <?php 
-  include('lawyer.footer.inc.php');
-?>
+    </div>
+  </section>
+
+</main><!-- End #main -->
+
+<?php include('lawyer.footer.inc.php'); ?>

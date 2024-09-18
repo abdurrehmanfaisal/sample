@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           ('$username','$password','$userid')";
 
             if (mysqli_query($conn, $insert_login_sql)) {
-                header('LOCATION:login.php');
+                header('LOCATION:users.php');
             }
         }
     }

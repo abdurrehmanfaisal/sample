@@ -34,7 +34,8 @@ $users = mysqli_query($conn,$users_sql);
                   <table class="table datatable">
                       <thead>
                           <tr>
-                              <th scope="col">#</th>
+                            <th scope="col">#</th>
+                            <th scope="col">Photo</th>
                               <th scope="col">Name</th>
                               <th scope="col">Email</th>
                               <th scope="col">Gender</th>
@@ -44,7 +45,6 @@ $users = mysqli_query($conn,$users_sql);
                               <th scope="col">Username</th>
                               <th scope="col">Password</th>
                               <th scope="col">Role</th>
-                              <th scope="col">Photo</th>
                               <th scope="col">Actions</th>
                             </tr>
                         </thead>
@@ -52,6 +52,7 @@ $users = mysqli_query($conn,$users_sql);
                             <?php $cnt = 1; while($user = mysqli_fetch_assoc($users)) {?>
                                 <tr>
                                     <th scope="row"><?php echo $cnt;?></th>
+                                    <td><img src="<?php echo $user['photo']?>" alt="<?php echo $user['name']?>" style="height: 50px;"></td>
                                     <td><?php echo $user['name']?></td>
                                     <td><?php echo $user['email']?></td>
                                     <td><?php echo $user['gender']?></td>
@@ -61,7 +62,6 @@ $users = mysqli_query($conn,$users_sql);
                                     <td><?php echo $user['username']?></td>
                                     <td><?php echo $user['password']?></td>
                                     <td><?php echo $user['role']?></td>
-                                    <td><img src="<?php echo $user['photo']?>" alt="<?php echo $user['name']?>"></td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a href="" type="button" class="btn btn-info">View</a>

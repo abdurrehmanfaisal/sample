@@ -31,7 +31,7 @@ $att_sql = "SELECT * FROM `users` AS usr
             <div class="carousel-caption">
                 <h1 class="animated fadeInLeft">We prepared to oppose for you</h1>
                 <p class="animated fadeInRight">Best Service Garantee.</p>
-                <a class="btn animated fadeInUp" href="#">Book an appointment</a>
+                <a class="btn animated fadeInUp" href="Bookanappoitment.php">Book an appointment</a>
             </div>
         </div>
 
@@ -40,7 +40,7 @@ $att_sql = "SELECT * FROM `users` AS usr
             <div class="carousel-caption">
                 <h1 class="animated fadeInLeft">We fight for your privilege</h1>
                 <p class="animated fadeInRight">Best Service Garantee.</p>
-                <a class="btn animated fadeInUp" href="#">Book an appointment</a>
+                <a class="btn animated fadeInUp" href="Bookanappoitment.php">Book an appointment</a>
             </div>
         </div>
     </div>
