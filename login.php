@@ -10,8 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $login_sql = "SELECT * FROM logins WHERE username = '$username'";
 
-    if($response = mysqli_fetch_assoc(mysqli_query($conn,$login_sql))) {
-      pr($response);
+    if($response = mysqli_query($conn,$login_sql)) {
+      $response = mysqli_fetch_assoc($response);
       $password_db = test_input($response['password']);
       $userid = test_input($response['userid']);
 
@@ -27,7 +27,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['phone'] = test_input($user['phone']);
         $_SESSION['address'] = test_input($user['address']);
         $_SESSION['roleid'] = test_input($user['roleid']);
-        pr($_SESSION);
 
         switch($_SESSION['roleid']) {
           case 1:
@@ -46,8 +45,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $loginError = 'Unknown User Type';
           break;
         }
-
-
 
         echo "login successfull!";
       }else {
@@ -171,7 +168,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
 
               <div class="credits">
-                <!-- All the links in the footer should remain intact. -->
+ <!-- All the links in the footer should remain intact. -->
                 <!-- You can delete the links only if you purchased the pro version. -->
                 <!-- Licensing information: https://bootstrapmade.com/license/ -->
                 <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->

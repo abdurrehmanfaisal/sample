@@ -11,11 +11,14 @@ $appointments_sql = "
         app.date,
         app.time,
         app.status,
-        cus.name AS CustomerName
+        cus.name AS CustomerName,
+        law.name AS LawyerName
     FROM 
         appointments AS app
     JOIN 
         users AS cus ON app.customerid = cus.userid
+    JOIN 
+        users AS law ON app.lawyerid = law.userid
     WHERE 
         app.customerid = ?
 ";
@@ -41,7 +44,7 @@ if ($result->num_rows > 0) {
             <h1>All Appointments</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="admin.dashboard.php">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="customer.dashboard.php">Dashboard</a></li>
                     <li class="breadcrumb-item active">Appointments</li>
                 </ol>
             </nav>
@@ -63,6 +66,7 @@ if ($result->num_rows > 0) {
                                         <th scope="col">Date</th>
                                         <th scope="col">Time</th>
                                         <th scope="col">Customer Name</th>
+                                        <th scope="col">Lawyer Name</th>
                                         <th scope="col">Status</th>
                                     </tr>
                                 </thead>
@@ -75,7 +79,8 @@ if ($result->num_rows > 0) {
                                             <td><?php echo $appointment['appointmentid']; ?></td>
                                             <td><?php echo $appointment['date']; ?></td>
                                             <td><?php echo $appointment['time']; ?></td>
-                                            <td><?php echo $appointment['CustomerName']; ?></td>                                            
+                                            <td><?php echo $appointment['CustomerName']; ?></td>
+                                            <td><?php echo $appointment['LawyerName']; ?></td>
                                             <td>
                                                 <?php
                                                 if ($appointment['status'] == 1) {

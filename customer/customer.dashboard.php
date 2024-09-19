@@ -79,8 +79,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="admin.dashboard.php">Dashboard</a></li>
-        <li class="breadcrumb-item"><a href="users.php">Users</a></li>
-        <li class="breadcrumb-item active">User</li>
       </ol>
     </nav>
   </div><!-- End Page Title -->

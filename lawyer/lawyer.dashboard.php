@@ -75,12 +75,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <main id="main" class="main">
   <div class="pagetitle">
-    <h1>User</h1>
+    <h1>Lawyer</h1>
     <nav>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="admin.dashboard.php">Dashboard</a></li>
-        <li class="breadcrumb-item"><a href="users.php">Users</a></li>
-        <li class="breadcrumb-item active">User</li>
+        <li class="breadcrumb-item"><a href="lawyer.dashboard.php">Lawyer Dashboard</a></li>
       </ol>
     </nav>
   </div><!-- End Page Title -->
@@ -91,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">User Details</h5>
+            <h5 class="card-title">Lawyer Details</h5>
 
             <!-- Update User Form -->
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
@@ -153,24 +151,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               </div>
 
               <fieldset class="row mb-3">
-  <legend class="col-form-label col-sm-2 pt-0">Gender</legend>
-  <div class="col-sm-10">
-    <?php 
-    if (!empty($genderid)) {
-      $gender_sql = "SELECT * FROM genders WHERE genderid = $genderid";
-      $gender = mysqli_fetch_assoc(mysqli_query($conn, $gender_sql));
-      ?>
-      <input readonly class="form-control-plaintext" type="hidden" name="genderid" value="<?php echo $genderid; ?>">
-      <label class="form-check-label">
-        <?php echo $gender['gender']; ?>
-      </label>
-    <?php } else { ?>
-      <label class="form-check-label">
-        No gender selected
-      </label>
-    <?php } ?>
-  </div>
-</fieldset>
+                <legend class="col-form-label col-sm-2 pt-0">Gender</legend>
+                <div class="col-sm-10">
+                  <?php
+                  if (!empty($genderid)) {
+                    $gender_sql = "SELECT * FROM genders WHERE genderid = $genderid";
+                    $gender = mysqli_fetch_assoc(mysqli_query($conn, $gender_sql));
+                  ?>
+                    <input readonly class="form-control-plaintext" type="hidden" name="genderid" value="<?php echo $genderid; ?>">
+                    <label class="form-check-label">
+                      <?php echo $gender['gender']; ?>
+                    </label>
+                  <?php } else { ?>
+                    <label class="form-check-label">
+                      No gender selected
+                    </label>
+                  <?php } ?>
+                </div>
+              </fieldset>
 
               <!-- <div class="row mb-3">
                 <label for="roleid" class="col-sm-2 col-form-label">Role</label>
@@ -178,8 +176,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   <select name="roleid" id="roleid" class="form-select">
                     <?php while ($role = mysqli_fetch_assoc($roles)) { ?>
                       <option value="<?php echo $role['roleid']; ?>" <?php if ($role['roleid'] == $roleid) {
-                     echo "selected";
-                    } ?>><?php echo $role['role']; ?></option>
+                                                                        echo "selected";
+                                                                      } ?>><?php echo $role['role']; ?></option>
                     <?php } ?>
                   </select>
                 </div>

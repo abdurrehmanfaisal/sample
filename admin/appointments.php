@@ -22,7 +22,7 @@ $appointments = mysqli_query($conn, $appointments_sql);
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">All appointments</h5>
-                        <p><a href="add.appointment.php" type="button" class="btn btn-primary"><i class="ri-add-box-line"></i> Add appointment</a></p>
+                        <!-- <p><a href="add.appointment.php" type="button" class="btn btn-primary"><i class="ri-add-box-line"></i> Add appointment</a></p> -->
                         <!-- Table with stripped rows -->
                         <table class="table datatable">
                             <thead>

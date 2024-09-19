@@ -1,100 +1,113 @@
 <?php
-    require("connection.inc.php");
-    $userid = $name = $email = $phone = $username = $password = $cPassword = $genderid = $roleid = '';
-    $nameErr = $emailErr = $phoneErr = $usernameErr = $passwordErr = '';
+require("connection.inc.php");
 
-    $gender_sql = "SELECT * FROM genders";
-    $genders = mysqli_query($conn,$gender_sql);
+// Initialize variables
+$userid = $name = $email = $phone = $username = $password = $cPassword = $genderid = $roleid = '';
+$nameErr = $emailErr = $phoneErr = $usernameErr = $passwordErr = '';
 
-    $logins_sql = "SELECT * FROM logins";
-    $logins = mysqli_query($conn,$logins_sql);
+// SQL queries
+$gender_sql = "SELECT * FROM genders";
+$genders = mysqli_query($conn, $gender_sql);
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      if (empty($_POST["roleid"])) {
-        $roleid = '';
-      } else {
-        $roleid = test_input($_POST["roleid"]);        
-      }
+$logins_sql = "SELECT * FROM logins";
+$logins = mysqli_query($conn, $logins_sql);
 
-      if (empty($_POST["name"])) {
-        $nameErr = "Name is required";
-      } else {
-        $name = test_input($_POST["name"]);
-        // check if name only contains letters and whitespace
-        if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
-          $nameErr = "Only letters and white space allowed";
-        }
-      }
-      
-      if (empty($_POST["email"])) {
-        $emailErr = "Email is required";
-      } else {
-        $email = test_input($_POST["email"]);
-        // check if e-mail address is well-formed
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-          $emailErr = "Invalid email format";
-        }
-      }
-      
-      if (empty($_POST["genderid"])) {
-        $genderid = '';
-      } else {
-        $genderid = test_input($_POST["genderid"]);        
-      }
+// Check if form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  // Validate roleid
+  if (empty($_POST["roleid"])) {
+    $roleid = '';
+  } else {
+    $roleid = test_input($_POST["roleid"]);
+  }
 
-      if (empty($_POST["phone"])) {
-        $phoneErr = "phone number is required";
-      } else {
-        $phone = test_input($_POST["phone"]);
-        // check if e-mail address is well-formed
-        if (!preg_match("/^(\+92|0092|0)-?3\d{2}-?\d{7}$/",$phone)) {          
-          $phoneErr = "Invalid phone format";
-        }
-      }
-      if(empty($_POST["username"])){
-        $usernameErr = "Username is required";
-      } else {
-        $username = test_input($_POST["username"]);        
-        while($login = mysqli_fetch_assoc($logins)) {
-          if($login['username'] == $username) {
-            $usernameErr = "username is alreay taken! try another";
-            break;
-          }          
-        }
-      }
-      if(empty($_POST['password'])) {
-        $passwordErr = "password is required!";
-      }elseif(empty($_POST['cPassword'])) {
-        $passwordErr = "confirm the password";        
-      }else {
-        $password = test_input($_POST['password']);
-        $cPassword = test_input($_POST['cPassword']);
-        if($password !== $cPassword) {
-          $passwordErr = "Password miss-matched!";
-        }
-      }
+  // Validate name
+  if (empty($_POST["name"])) {
+    $nameErr = "Name is required";
+  } else {
+    $name = test_input($_POST["name"]);
+    // check if name only contains letters and whitespace
+    if (!preg_match("/^[a-zA-Z-' ]*$/", $name)) {
+      $nameErr = "Only letters and white space allowed";
+    }
+  }
 
-      if(empty($nameErr) && empty($emailErr) && empty($phoneErr) && empty($passwordErr)) {
-        $insert_user_sql = "INSERT INTO `users`
+  // Validate email
+  if (empty($_POST["email"])) {
+    $emailErr = "Email is required";
+  } else {
+    $email = test_input($_POST["email"]);
+    // check if e-mail address is well-formed
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      $emailErr = "Invalid email format";
+    }
+  }
+
+  // Validate genderid
+  if (empty($_POST["genderid"])) {
+    $genderid = '';
+  } else {
+    $genderid = test_input($_POST["genderid"]);
+  }
+
+  // Validate phone
+  if (empty($_POST["phone"])) {
+    $phoneErr = "phone number is required";
+  } else {
+    $phone = test_input($_POST["phone"]);
+    // check if e-mail address is well-formed
+    if (!preg_match("/^(\+92|0092|0)-?3\d{2}-?\d{7}$/", $phone)) {
+      $phoneErr = "Invalid phone format";
+    }
+  }
+
+  // Validate username
+  if (empty($_POST["username"])) {
+    $usernameErr = "Username is required";
+  } else {
+    $username = test_input($_POST["username"]);
+    while ($login = mysqli_fetch_assoc($logins)) {
+      if ($login['username'] == $username) {
+        $usernameErr = "username is alreay taken! try another";
+        break;
+      }
+    }
+  }
+
+  // Validate password and confirm password
+  if (isset($_POST['password']) && isset($_POST['cPassword'])) {
+    $password = $_POST['password'];
+    $cPassword = $_POST['cPassword'];
+
+    if (empty($password) || empty($cPassword)) {
+      $passwordErr = "Please enter both passwords!";
+    } elseif ($password != $cPassword) {
+      $passwordErr = "Passwords do not match!";
+    } else {
+      $passwordErr = "";
+    }
+  }
+
+  // Check if all fields are valid
+  if (empty($nameErr) && empty($emailErr) && empty($phoneErr) && empty($usernameErr) && empty($passwordErr)) {
+    // Insert data into database
+    $insert_user_sql = "INSERT INTO `users`
          (`name`, `email`, `genderid`, `phone`, `roleid`)
          VALUES
          ('$name', '$email', '$genderid', '$phone', '$roleid')";
-        if(mysqli_query($conn,$insert_user_sql)) {
-          $userid = mysqli_insert_id($conn);
-          $insert_login_sql = "INSERT INTO `logins`
+    if (mysqli_query($conn, $insert_user_sql)) {
+      $userid = mysqli_insert_id($conn);
+      $insert_login_sql = "INSERT INTO `logins`
           (`username`,`password`,`userid`)
           VALUES
           ('$username','$password','$userid')";
 
-          if(mysqli_query($conn,$insert_login_sql)) {
-            header('LOCATION:login.php');
-          }
-        }
-
-
-
+      if (mysqli_query($conn, $insert_login_sql)) {
+        header('LOCATION:login.php');
       }
     }
+  }
+}
 ?>
 
 <!DOCTYPE html>
@@ -159,12 +172,12 @@
                 <div class="card-body">
 
                   <div class="pt-4 pb-2">
-                    <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
+                    <h5 class="card-title text-center pb-0 fs-4">Create an Account</ h5>
                     <p class="text-center small">Enter your personal details to create account</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" novalidate>
-                  <div class="col-12">
+                  <form class="row g-3 needs-validation" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" novalidate>
+                    <div class="col-12">
                       <label for="roleid" class="form-label">Select Role</label>
                       <select name="roleid" id="roleid" class="form-control" required>
                         <option value="2">Lawyer</option>
@@ -172,64 +185,58 @@
                       </select>
                       <div class="invalid-feedback">Select Role!</div>
                     </div>
-                  <div class="col-12">
+                    <div class="col-12">
                       <label for="yourName" class="form-label">Your Name</label>
-                      <input type="text" name="name" class="form-control" id="yourName" value="<?php echo $name;?>" required>
+                      <input type="text" name="name" class="form-control" id="yourName" value="<?php echo $name; ?>" required>
                       <div class="invalid-feedback">Please, enter your name!</div>
-                      <div class="text-danger"><?php echo $nameErr?></div>
+                      <div class="text-danger"><?php echo $nameErr ?></div>
                     </div>
 
                     <div class="col-12">
                       <label for="yourEmail" class="form-label">Your Email</label>
-                      <input type="email" name="email" class="form-control" id="yourEmail" value="<?php echo $email;?>" required>
+                      <input type="email" name="email" class="form-control" id="yourEmail" value="<?php echo $email; ?>" required>
                       <div class="invalid-feedback">Please enter a valid Email adddress!</div>
-                      <div class="text-danger"><?php echo $emailErr?></div>
+                      <div class="text-danger"><?php echo $emailErr ?></div>
                     </div>
 
-                    
                     <div class="col-12">
                       <label for="genderid" class="form-label">Select Gender</label>
                       <select name="genderid" id="genderid" class="form-control" required>
-                      <?php while($gender = mysqli_fetch_assoc($genders)){?>
-                        <option value="<?php echo $gender['genderid']?>"><?php echo $gender['gender']?></option>
-                      <?php }?>
+                        <?php while ($gender = mysqli_fetch_assoc($genders)) { ?>
+                          <option value="<?php echo $gender['genderid'] ?>"><?php echo $gender['gender'] ?></option>
+                        <?php } ?>
                       </select>
                       <div class="invalid-feedback">Please enter a valid Date!</div>
                     </div>
-<!-- 
-                    <div class="col-12">
-                      <label for="dob" class="form-label">Date of Birth</label>
-                      <input type="date" name="dob" class="form-control" id="dob"required>
-                      <div class="invalid-feedback">Please enter a valid Date!</div>
-                    </div> -->
 
                     <div class="col-12">
                       <label for="phone" class="form-label">Phone/Cell Number</label>
-                      <input type="tel" name="phone" class="form-control" id="phone" placeholder="+92-3XX-XXXXXXX" value="<?php echo $phone;?>" required>
+                      <input type="tel" name="phone" class="form-control" id="phone" placeholder="+92-3XX-XXXXXXX" value="<?php echo $phone; ?>" required>
                       <div class="invalid-feedback">Please enter a valid Phone Number!</div>
-                      <div class="text-danger"><?php echo $phoneErr?></div>
+                      <div class="text-danger"><?php echo $phoneErr ?></div>
                     </div>
-
 
                     <div class="col-12">
                       <label for="yourUsername" class="form-label">Username</label>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" name="username" class="form-control" id="yourUsername" value="<?php echo $username;?>" required>
+                        <input type="text" name="username" class="form-control" id="yourUsername" value="<?php echo $username; ?>" required>
                         <div class="invalid-feedback">Please choose a username.</div>
                       </div>
                     </div>
 
                     <div class="col-12">
                       <label for="yourPassword" class="form-label">Password</label>
-                      <input type="password" name="password" class="form-control" id="yourPassword" value="<?php echo $password;?>" required>
-                      <div class="invalid-feedback">Please enter your password!</div>
+                      <input type="password" name="password" class="form-control" id="yourPassword" value="<?php echo $password; ?>" required>
+                      <div class="invalid-feedback">Please enter a password!</div>
+                      <div class="text-danger"><?php echo $passwordErr ?></div>
                     </div>
 
                     <div class="col-12">
                       <label for="cPassword" class="form-label">Confirm Password</label>
-                      <input type="password" name="cPassword" class="form-control" id="cPassword" value="<?php echo $cPassword;?>" required>
-                      <div class="invalid-feedback">Please re-enter your password!</div>
+                      <input type="password" name="cPassword" class="form-control" id="cPassword" value="<?php echo $cPassword; ?>" required>
+                      <div class="invalid-feedback">Please confirm password!</div>
+                      <div class="text-danger"><?php echo $passwordErr ?></div>
                     </div>
 
                     <div class="col-12">

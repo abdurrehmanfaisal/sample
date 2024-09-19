@@ -88,10 +88,10 @@ $attorneys = mysqli_query($conn,$att_sql);
               </select>
             </div>
             <div class="col-lg-4">
-              <input type="text" name="search" class="form-control" placeholder="Search Lawyers">
+              <input type="text" name="search" class="form-control d-flex" placeholder="Search Lawyers">
             </div>
           </div>
-          <button type="submit" class="btn btn-primary">Search</button>
+          <button type="submit" class="btn btn-primary ">Search</button>
         </form>
       </div>
     </div>

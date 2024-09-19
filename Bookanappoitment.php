@@ -1,5 +1,14 @@
 <?php
 require('connection.inc.php');
+
+if (!isset($_SESSION)) {
+  session_start();
+}
+
+if (!isset($_SESSION['userid'])) {
+  header('Location: login.php');
+}
+
 $userid = $_SESSION['userid'];
 $appointmentError = '';
 
@@ -13,14 +22,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $appointmentError = "Please fill in all fields";
   } else {
     // Check if lawyerid exists in users table
-    $user_sql = "SELECT userid FROM users WHERE userid = '$lawyerid'";
+    $user_sql = "SELECT userid FROM users WHERE userid = '$lawyerid' AND roleid = 2";
     $user_result = mysqli_query($conn, $user_sql);
     if (mysqli_num_rows($user_result) == 1) {
       // Insert into appointments table
       $insert_appointment_sql = "INSERT INTO appointments (date, time, customerid, lawyerid) VALUES ('$date', '$time', '$userid', '$lawyerid')";
       if (mysqli_query($conn, $insert_appointment_sql)) {
         $appointmentid = mysqli_insert_id($conn);
-        header('LOCATION: ../customer.dashboard.php');
+        header('LOCATION: index.php');
+        exit;
       } else {
         $appointmentError = "Error inserting into database";
       }
@@ -30,9 +40,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 }
 
-// Get list of users for dropdowns
-$users_sql = "SELECT * FROM users";
-$users = mysqli_query($conn, $users_sql);
+// Get list of lawyers for dropdown
+$lawyers_sql = "SELECT * FROM users WHERE roleid = 2";
+$lawyers = mysqli_query($conn, $lawyers_sql);
 ?>
 
 <!DOCTYPE html>
@@ -104,6 +114,11 @@ $users = mysqli_query($conn, $users_sql);
                   <form accept="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" class="row g-3 needs-validation" novalidate>
 
                     <div class="col-12">
+                      <label for="customerid" class="form-label">Customer ID</label>
+                      <input type="text" name="customerid" class="form-control" id="customerid" value="<?php echo $userid;?>" readonly>
+                    </div>
+
+                    <div class="col-12">
                       <label for="date" class="form-label">Date</label>
                       <input type="date" name="date" class="form-control" id="date" required>
                       <div class="invalid-feedback">Please enter a valid date</div>
@@ -118,8 +133,8 @@ $users = mysqli_query($conn, $users_sql);
                     <div class="col-12">
                       <label for="lawyerid" class="form-label">Lawyer</label>
                       <select name="lawyerid" id="lawyerid" class="form-control" required>
-                        <?php while ($user = mysqli_fetch_assoc($users)) { ?>
-                          <option value="<?php echo $user['userid']; ?>"><?php echo $user['name']; ?></option>
+                        <?php while ($lawyer = mysqli_fetch_assoc($lawyers)) { ?>
+                          <option value="<?php echo $lawyer['userid']; ?>"><?php echo $lawyer['name']; ?></option>
                         <?php } ?>
                       </select>
                       <div class="invalid-feedback">Please select a lawyer</div>
@@ -154,8 +169,6 @@ $users = mysqli_query($conn, $users_sql);
 
     </div>
   </main><!-- End #main -->
-
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
   <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
